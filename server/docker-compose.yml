@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  ilomdb:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ilo
+      MONGO_INITDB_ROOT_PASSWORD: ilo
+    ports:
+      - 27017:27017
+    networks:
+      - ilo_network
+
+  # server:
+  #   build: .
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - ilomdb
+  #   networks:
+  #     - ilomdb_network
+  #   environment:
+  #     DEV_DB_HOST: ilomdb
+
+networks:
+  ilo_network:
+    driver: bridge
