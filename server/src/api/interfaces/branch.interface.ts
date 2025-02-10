@@ -3,6 +3,7 @@ import { HydratedDocument, Model } from 'mongoose';
 export interface IRawBranch {
   bra_email: string;
   bra_msisdn: string;
+  bra_thumbnail: string;
   bra_address: {
     province: string;
     district: string;
@@ -19,6 +20,7 @@ export type IBranch = HydratedDocument<IRawBranch>;
 export interface IBranchAttrs {
   email: string;
   msisdn: string;
+  thumbnail: string;
   address: {
     province: string;
     district: string;

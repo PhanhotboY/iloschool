@@ -7,6 +7,7 @@ const branchSchema = new Schema<IBranch, IBranchModel>(
   {
     bra_email: { type: String, required: true },
     bra_msisdn: { type: String, required: true },
+    bra_thumbnail: { type: String, required: true },
     bra_address: {
       province: { type: String, required: true },
       district: { type: String, required: true },

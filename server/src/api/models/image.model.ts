@@ -4,7 +4,14 @@ import { formatAttributeName } from '../utils';
 import { IMAGE } from '../constants';
 
 const sliderSchema = new Schema<IImage, IImageModel>(
-  { img_name: String, img_alt: String },
+  {
+    img_name: { type: String, required: true, unique: true },
+    img_title: { type: String, required: true },
+    img_type: { type: String },
+    img_description: { type: String },
+    img_link: { type: String },
+    img_isPublic: { type: Boolean, required: true, default: true },
+  },
   {
     timestamps: true,
     collection: IMAGE.COLLECTION_NAME,

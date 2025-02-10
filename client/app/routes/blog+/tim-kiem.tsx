@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Form, useLoaderData, useLocation } from '@remix-run/react';
-import SideBar from '~/routes/blog+/SideBar';
+import SideBar from '~/routes/blog+/components/SideBar';
 import { getPosts } from '~/services/page.server';
 import { LoaderFunctionArgs } from '@remix-run/node';
 import { RiSearch2Line } from '@remixicon/react';
@@ -68,10 +68,10 @@ export default function SearchPage() {
 
       <div className='col-span-full md:col-span-9'>
         <PostList
-          pages={searchRes.pages}
-          pagesGetter={async (page) => {
-            const pages = await pagesFetcher(page);
-            return pages;
+          posts={searchRes.pages}
+          postsGetter={async (post) => {
+            const posts = await pagesFetcher(post);
+            return posts;
           }}
         />
       </div>

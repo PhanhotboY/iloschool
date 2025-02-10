@@ -3,6 +3,7 @@ import ImagePreview from '../ImagePreview';
 import { IImage } from '~/interfaces/image.interface';
 import ImageUploader from './ImageUploader';
 import { getImageUrl } from '~/utils';
+import ImageMetadata from './ImageMetadata';
 
 interface ImagePickerProps {
   multiple?: boolean;
@@ -19,20 +20,20 @@ export default function ImagePicker({
   onClose,
   onSelect,
 }: ImagePickerProps) {
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<IImage[]>([]);
   const [selectedImages, setSelectedImages] = useState<string[]>(selected);
   const [activeTab, setActiveTab] = useState(defaultActiveTab);
 
-  const handleImageClick = (image: string) => {
+  const handleImageClick = (image: IImage) => {
     if (multiple) {
       setSelectedImages(
         (prev) =>
-          prev.includes(image)
-            ? prev.filter((img) => img !== image) // Deselect if already selected
-            : [...prev, image] // Add to selection
+          prev.includes(image.img_name)
+            ? prev.filter((img) => img !== image.img_name) // Deselect if already selected
+            : [...prev, image.img_name] // Add to selection
       );
     } else {
-      setSelectedImages([image]); // Allow only one selection
+      setSelectedImages([image.img_name]); // Allow only one selection
     }
   };
 
@@ -46,8 +47,8 @@ export default function ImagePicker({
       const res = await fetch('/api/data?getter=getImages');
       const images = (await res.json()) as IImage[];
 
-      // setImages(images);
-      setImages(images.map((image) => image.img_name));
+      setImages(images);
+      // setImages(images.map((image) => image.img_name));
     })();
 
     const escapeHandler = (e: KeyboardEvent) => {
@@ -65,7 +66,11 @@ export default function ImagePicker({
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-8 z-50'>
       <div className='flex flex-col bg-white gap-4 p-6 rounded-lg shadow-lg w-full h-full overflow-y-auto'>
         <div className='flex-grow grid grid-cols-12 divide-x divide-zinc-200 gap-4'>
-          <div className='col-span-10 flex-grow w-full h-full divide-y divide-zinc-200'>
+          <div
+            className={`${
+              activeTab === 1 ? 'col-span-12' : 'col-span-9'
+            } flex-grow w-full h-full divide-y divide-zinc-200 transition-all`}
+          >
             <div className='w-full flex gap-4 px-4'>
               <button
                 className={`-mb-[1px] rounded-t px-2 py-1 border-zinc-200 ${
@@ -90,8 +95,8 @@ export default function ImagePicker({
             {activeTab === 1 && (
               <ImageUploader
                 handleImageUploaded={(images) => {
-                  handleImageClick(images[0].img_name);
-                  setImages((prev) => [...prev, images[0].img_name]);
+                  handleImageClick(images[0]);
+                  setImages((prev) => [...prev, ...images]);
                   setActiveTab(2);
                 }}
               />
@@ -102,16 +107,16 @@ export default function ImagePicker({
                   <div
                     key={index}
                     className={`border-2 rounded-lg aspect-square cursor-pointer flex justify-center items-center transition-all ${
-                      selectedImages.includes(image)
+                      selectedImages.includes(image.img_name)
                         ? 'border-blue-500'
                         : 'border-gray-300'
-                    }`}
+                    } overflow-hidden`}
                     onClick={() => handleImageClick(image)}
                   >
                     <img
-                      src={getImageUrl(image)}
-                      alt={`Image ${index + 1}`}
-                      className='max-w-full max-h-full'
+                      src={getImageUrl(image.img_name)}
+                      alt={image.img_title}
+                      className=''
                     />
                   </div>
                 ))}
@@ -119,9 +124,17 @@ export default function ImagePicker({
             )}
           </div>
 
-          <div className='col-span-2 h-full pl-4'>
-            <ImagePreview src={selectedImages[0]} />
-          </div>
+          {activeTab === 1 || (
+            <div className='col-span-3 h-full pl-4 flex flex-col gap-4'>
+              <ImagePreview src={selectedImages[0]} />
+              <ImageMetadata
+                image={
+                  images.find((img) => img.img_name === selectedImages[0]) ||
+                  ({} as any)
+                }
+              />
+            </div>
+          )}
         </div>
 
         <div className='h-fit flex justify-between'>

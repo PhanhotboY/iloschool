@@ -2,11 +2,14 @@ import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 
-import BlogEditor from '~/components/PageEditor/Blog';
+import BlogEditor from '~/routes/cmsdesk+/pages+/components/PageEditor/Blog';
+import ContactPageEditor from '~/routes/cmsdesk+/pages+/components/PageEditor/ContactPage';
+import LandingPageEditor from '~/routes/cmsdesk+/pages+/components/PageEditor/LandingPage';
+import { PAGE } from '~/constants/page.constant';
 import { authenticator } from '~/services/auth.server';
 import { createPage } from '~/services/page.server';
-import { getPageCategories } from '~/services/pageCategory.server';
-import { getPageTemplates } from '~/services/pageTemplate.server';
+import Wrapper from '../branches+/components/Wrapper';
+import PageEditor from './components/PageEditor';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request);
@@ -25,7 +28,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         const template = formData.get('template') as string;
         const isPublished = formData.get('isPublished') === 'true';
 
-        if (!title || !content || !category || !template) {
+        if (!title || !template) {
           return {
             toast: {
               message: 'Vui lòng điền đầy đủ thông tin!',
@@ -65,22 +68,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 };
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const pageTemplates = await getPageTemplates();
-  const pageCategories = await getPageCategories();
-
-  return { pageTemplates, pageCategories };
-};
-
 export default function CreatePage() {
-  const { pageTemplates } = useLoaderData<typeof loader>();
-
-  const [template, setTemplate] = useState(
-    pageTemplates.find((tem) => tem.ptp_code === 'blog')?.id ||
-      pageTemplates[0].id
-  );
-
-  return (
-    <BlogEditor type='create' template={template} setTemplate={setTemplate} />
-  );
+  return <PageEditor />;
 }

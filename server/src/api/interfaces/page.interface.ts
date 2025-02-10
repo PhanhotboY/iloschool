@@ -9,8 +9,8 @@ interface IRawPage {
   pst_slug: string;
   pst_views: number;
   pst_excerpt: string;
-  pst_category: ObjectId;
-  pst_template: ObjectId;
+  pst_category: string;
+  pst_template: string;
   pst_isPublished: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -24,8 +24,8 @@ export interface IPageAttrs {
   thumbnail: string;
   slug: string;
   excerpt: string;
-  category: ObjectId;
-  template: ObjectId;
+  category: string;
+  template: string;
   isPublished?: boolean;
   views?: number;
 }

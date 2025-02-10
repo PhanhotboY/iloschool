@@ -30,12 +30,10 @@ const pageSchema = new Schema<IPage, IPageModel>(
       required: true,
     },
     pst_category: {
-      type: Types.ObjectId,
-      ref: PAGE.CATEGORY.DOCUMENT_NAME,
+      type: String,
     },
     pst_template: {
-      type: Types.ObjectId,
-      ref: PAGE.TEMPLATE.DOCUMENT_NAME,
+      type: String,
       required: true,
     },
     pst_views: {

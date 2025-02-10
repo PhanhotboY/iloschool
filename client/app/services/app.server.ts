@@ -7,10 +7,10 @@ const getAppSettings = async () => {
   return res as IAppSettings;
 };
 
-const updateAppSettings = async (data: FormData, request: any) => {
+const updateAppSettings = async (data: any, request: any) => {
   const res = await fetcher(`/app/settings`, {
     method: 'PUT',
-    body: data,
+    body: JSON.stringify(data),
     request,
   });
 

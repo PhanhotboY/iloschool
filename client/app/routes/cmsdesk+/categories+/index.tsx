@@ -73,6 +73,7 @@ export default function ManageCategories() {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [order, setOrder] = useState('');
+  const [page, setPage] = useState('');
 
   useEffect(() => {
     switch (fetcher.state) {
@@ -162,7 +163,8 @@ export default function ManageCategories() {
           name='page'
           className='w-full'
           required
-          defaultValue=''
+          value={page}
+          onChange={(e) => setPage(e.target.value)}
         >
           <option value=''>Không có</option>
           {pages.map((page, i) => (
@@ -176,7 +178,7 @@ export default function ManageCategories() {
           <button
             className='center rounded-lg bg-blue-500 py-2 px-3 font-sans font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg enable:active:bg-blue-500/80 disabled:opacity-60'
             type='submit'
-            disabled={loading || !name || !order}
+            disabled={loading || !name || !order || !page}
           >
             Thêm danh mục
           </button>

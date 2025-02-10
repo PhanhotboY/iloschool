@@ -3,7 +3,12 @@ import { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { Await, useFetcher, useLoaderData } from '@remix-run/react';
 
 import HandsomeError from '~/components/HandsomeError';
-import { getPages, getPostDetail, getPosts } from '~/services/page.server';
+import {
+  getPage,
+  getPages,
+  getPostDetail,
+  getPosts,
+} from '~/services/page.server';
 import PostDetail from '~/components/PostDetail';
 import Hydrated from '~/components/Hydrated';
 import ShareBox from '~/widgets/ShareBox';
@@ -13,12 +18,8 @@ import { authenticator } from '~/services/auth.server';
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { pageSlug } = params;
 
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: '/cmsdesk/login',
-  });
-
   try {
-    const page = await getPostDetail(pageSlug!, user);
+    const page = await getPage(pageSlug!);
     const relatedPages = await getPosts();
 
     return {

@@ -4,7 +4,6 @@ import HandsomeError from '~/components/HandsomeError';
 import TextRenderer from '~/components/TextRenderer';
 import { getPage } from '~/services/page.server';
 import LandingPage from './LandingPage';
-import ContactPage from './ContactPage';
 import { PAGE } from '~/constants/page.constant';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -28,9 +27,6 @@ export default function Page() {
   switch (page.pst_template.ptp_code) {
     case PAGE.TEMPLATE.HOME_PAGE.code:
       return <LandingPage />;
-
-    case PAGE.TEMPLATE.CONTACT_PAGE.code:
-      return <ContactPage />;
 
     default:
       return (

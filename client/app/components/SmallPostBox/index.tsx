@@ -2,7 +2,7 @@ import { IPage } from '~/interfaces/page.interface';
 import HorizontalPost from '../Page/Horizontal';
 import VerticalPost from '../Page/Vertical';
 // import BoxHeader from '../BoxHeading';
-import SideBar from '../../routes/blog+/SideBar';
+import SideBar from '../../routes/blog+/components/SideBar';
 import { useEffect, useState } from 'react';
 
 export default function SmallPageBox({

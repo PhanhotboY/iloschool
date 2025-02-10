@@ -15,7 +15,17 @@ const diskStorage = multer({
       cb(null, UPLOAD_FOLDER);
     },
     filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${slugify(file.originalname)}`);
+      const decodedFilename = Buffer.from(file.originalname, 'latin1').toString(
+        'utf8'
+      );
+
+      cb(
+        null,
+        `${Date.now()}-${slugify(decodedFilename, {
+          locale: 'vi',
+          lower: true,
+        })}`
+      );
     },
   }),
   // limits: { fileSize: UPLOAD_SIZE_LIMIT },

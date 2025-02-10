@@ -1,30 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
-import pkg from 'vn-provinces';
 
 import { IBranchDetail } from '~/interfaces/branch.interface';
 import TextInput from '@components/TextInput';
 import Wrapper from './Wrapper';
 import Select from '~/widgets/Select';
 import CheckboxInput from '~/components/CheckboxInput';
-
-interface IProvince {
-  code: string;
-  name: string;
-  slug: string;
-  unit: string;
-}
-interface IDistrict {
-  code: string;
-  name: string;
-  slug: string;
-  unit: string;
-  provinceCode: string;
-  provinceName: string;
-  fullName: string;
-}
-
-const { getProvinces, getDistrictsByProvinceCode, getProvinceByCode } = pkg;
-const provinces = getProvinces() as Array<IProvince>;
+import ImageInput from '~/components/ImageInput';
+import {
+  getDistrictByCode,
+  getDistrictBySlug,
+  getDistrictsByProvinceCode,
+  getProvinceByCode,
+  getProvinceBySlug,
+  provinces,
+} from '~/utils/address.util';
 
 export default function BranchEditor({
   branch,
@@ -36,87 +25,68 @@ export default function BranchEditor({
   const [isChanged, setIsChanged] = useState(false);
   const [email, setEmail] = useState(branch?.bra_email || '');
   const [msisdn, setMsisdn] = useState(branch?.bra_msisdn || '');
+  const [thumbnail, setThumbnail] = useState(branch?.bra_thumbnail || '');
   const [province, setProvince] = useState(
-    provinces.find((p) => p.slug === branch?.bra_address.province)?.slug || ''
+    getProvinceBySlug(branch?.bra_address.province) || provinces[0]
   );
   const [districts, setDistricts] = useState(
-    provinces.find((p) => p.slug === branch?.bra_address.province)?.code
-      ? getDistrictsByProvinceCode(
-          provinces.find((p) => p.slug === branch?.bra_address.province)
-            ?.code || ''
-        )
-      : ([] as Array<IDistrict>)
+    getDistrictsByProvinceCode(province.code)
   );
   const [district, setDistrict] = useState(
-    districts.find((d) => d.slug === branch?.bra_address.district)?.slug || ''
+    getDistrictBySlug(districts, branch?.bra_address.district) || districts[0]
   );
-  // const [ward, setWard] = useState(branch?.bra_address);
   const [street, setStreet] = useState(branch?.bra_address.street || '');
   const [isMain, setIsMain] = useState(branch?.bra_isMain || false);
   const [map, setMap] = useState(branch?.bra_map || '');
 
   useEffect(() => {
-    getDistrictsByProvinceCode(
-      provinces.find((p) => p.slug === province)?.code || ''
-    );
-    const districts =
-      getDistrictsByProvinceCode(
-        provinces.find((p) => p.slug === province)?.code || ''
-      ) || ([] as Array<IDistrict>);
-
-    setDistricts(districts);
-    setDistrict(
-      districts.find((d) => d.slug === branch?.bra_address.district)?.slug || ''
-    );
-  }, [province]);
+    setDistricts(getDistrictsByProvinceCode(province.code));
+    setDistrict(districts[0]);
+  }, [province.code]);
 
   useEffect(() => {
     if (branch) {
       setIsChanged(
         email !== branch.bra_email ||
           msisdn !== branch.bra_msisdn ||
-          province !== branch?.bra_address.province ||
-          district !== branch?.bra_address.district ||
+          thumbnail !== branch.bra_thumbnail ||
+          province.slug !== branch?.bra_address.province ||
+          district.slug !== branch?.bra_address.district ||
           street !== branch.bra_address.street ||
           isMain !== branch.bra_isMain ||
           map !== branch.bra_map
       );
     }
-  }, [branch, email, msisdn, province, district, street, isMain, map]);
+  }, [
+    branch,
+    email,
+    msisdn,
+    thumbnail,
+    province,
+    district,
+    street,
+    isMain,
+    map,
+  ]);
 
   return (
     <Wrapper fetcherKey={branch?.id || 'new'} type={type} isChanged={isChanged}>
-      <div className='col-span-6'>
-        <TextInput
-          label='Email'
-          name='email'
-          type='email'
-          value={email}
-          onChange={setEmail}
+      <div className='col-span-6 row-span-2'>
+        <ImageInput
+          label='Thumbnail'
+          name='thumbnail'
+          value={thumbnail}
+          onChange={setThumbnail}
         />
       </div>
 
-      <div className='col-span-6 col-start-1'>
-        <TextInput
-          label='Số điện thoại'
-          name='msisdn'
-          value={msisdn}
-          onChange={setMsisdn}
-          pattern='[0-9]{10,11}'
-        />
-      </div>
-
-      <div className='col-span-6 col-start-1'>
-        <TextInput label='Map' name='map' value={map} onChange={setMap} />
-      </div>
-
-      <div className='col-span-6 row-start-1 col-start-7'>
+      <div className='province col-span-6 col-start-7'>
         <Select
           label='Tỉnh/Thành phố'
           name='province'
           className='w-full'
-          value={province}
-          onChange={(e) => setProvince(e.target.value)}
+          value={province.slug}
+          onChange={(e) => setProvince(getProvinceBySlug(e.target.value)!)}
         >
           <option value='' disabled>
             Chọn tỉnh/thành phố
@@ -130,13 +100,15 @@ export default function BranchEditor({
         </Select>
       </div>
 
-      <div className='col-span-6 row-start-2 col-start-7'>
+      <div className='district col-span-6 col-start-7'>
         <Select
           label='Quận/Huyện'
           name='district'
           className='w-full'
-          value={district}
-          onChange={(e) => setDistrict(e.target.value)}
+          value={district.slug}
+          onChange={(e) =>
+            setDistrict(getDistrictBySlug(districts, e.target.value)!)
+          }
         >
           <option value='' disabled>
             Chọn quận/huyện
@@ -150,7 +122,11 @@ export default function BranchEditor({
         </Select>
       </div>
 
-      <div className='col-span-6 row-start-3 col-start-7'>
+      <div className='map col-span-6'>
+        <TextInput label='Map' name='map' value={map} onChange={setMap} />
+      </div>
+
+      <div className='street col-span-6 col-start-7'>
         <TextInput
           label='Địa chỉ chi tiết'
           name='street'
@@ -159,7 +135,27 @@ export default function BranchEditor({
         />
       </div>
 
-      <div className='col-span-6'>
+      <div className='email col-span-6'>
+        <TextInput
+          label='Email'
+          name='email'
+          type='email'
+          value={email}
+          onChange={setEmail}
+        />
+      </div>
+
+      <div className='phone col-span-6'>
+        <TextInput
+          label='Số điện thoại'
+          name='msisdn'
+          value={msisdn}
+          onChange={setMsisdn}
+          pattern='[0-9]{10,11}'
+        />
+      </div>
+
+      <div className='toggle col-span-6'>
         <CheckboxInput
           label='Đặt làm chi nhánh chính'
           type='checkbox'

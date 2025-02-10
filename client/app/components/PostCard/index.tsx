@@ -1,6 +1,7 @@
 import { Link } from '@remix-run/react';
 import { format } from 'date-fns';
 import { IPage } from '~/interfaces/page.interface';
+import { getImageUrl } from '~/utils';
 
 export default function PostCard({
   page,
@@ -22,10 +23,14 @@ export default function PostCard({
         className='w-full h-full rounded-xl overflow-hidden'
       >
         <img
-          src={page.pst_thumbnail || '/placeholder.png'}
+          src={
+            page.pst_thumbnail
+              ? getImageUrl(page.pst_thumbnail)
+              : '/assets/placeholder.png'
+          }
           alt={page.pst_title}
           loading='lazy'
-          className='aspect-video w-full object-cover object-center  group-hover:scale-105 transition-all ease duration-300 '
+          className='aspect-video w-full object-cover object-center group-hover:scale-105 transition-all ease duration-300 '
         />
       </Link>
 

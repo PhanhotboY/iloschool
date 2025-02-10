@@ -9,6 +9,7 @@ import {
   updateBranch,
 } from '~/services/branch.server';
 import { useLoaderData } from '@remix-run/react';
+import { getMapLink } from '~/utils';
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
@@ -29,13 +30,22 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 
         const email = formData.get('email') as string;
         const msisdn = formData.get('msisdn') as string;
+        const thumbnail = formData.get('thumbnail') as string;
         const map = formData.get('map') as string;
         const isMain = formData.get('isMain') === 'on';
         const province = formData.get('province') as string;
         const district = formData.get('district') as string;
         const street = formData.get('street') as string;
 
-        if (!email || !msisdn || !map || !province || !district || !street) {
+        if (
+          !email ||
+          !msisdn ||
+          !thumbnail ||
+          !map ||
+          !province ||
+          !district ||
+          !street
+        ) {
           return {
             toast: {
               message: 'Vui lòng điền đầy đủ thông tin!',
@@ -51,7 +61,8 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
           {
             email,
             msisdn,
-            map,
+            thumbnail,
+            map: getMapLink(map),
             isMain,
             address: { province, district, street },
           },

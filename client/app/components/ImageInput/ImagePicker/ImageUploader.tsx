@@ -16,6 +16,10 @@ export default function ImageUploader({
       <label className='cursor-pointer flex-col w-1/2 items-center rounded-xl border-2 border-dashed border-blue-400 bg-white p-6 text-center'>
         <RiUploadCloud2Line className='w-6 h-6 text-blue-400 m-auto' />
 
+        <h2 className='text-xl mt-2 font-medium text-gray-700 tracking-wide'>
+          Upload Image
+        </h2>
+
         <p className='mt-2 text-gray-500 tracking-wide'>
           Upload your file SVG, PNG, JPG or GIF.
         </p>

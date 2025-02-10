@@ -26,14 +26,32 @@ import { getCurrentUser } from '~/services/user.server';
 import { IUser } from '~/interfaces/user.interface';
 import { countUnseenBookings } from '~/services/booking.server';
 import LoadingOverlay from '~/components/LoadingOverlay';
+import { getImageUrl } from '~/utils';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const user = await authenticator.isAuthenticated(request);
 
     let formData = await request.formData();
-    console.log(formData);
-    const res = await updateAppSettings(formData, user);
+
+    const res = await updateAppSettings(
+      {
+        title: formData.get('title') as string,
+        description: formData.get('description') as string,
+        logo: formData.get('logo') as string,
+        favicon: formData.get('favicon') as string,
+        social: {
+          facebook: formData.get('facebook') as string,
+          youtube: formData.get('youtube') as string,
+          tiktok: formData.get('tiktok') as string,
+          zalo: formData.get('zalo') as string,
+        },
+        taxCode: formData.get('taxCode') as string,
+        headScripts: formData.get('headScripts') as string,
+        bodyScripts: formData.get('bodyScripts') as string,
+      },
+      user
+    );
 
     return {
       ...res,
@@ -192,10 +210,10 @@ const UserBrief = ({ user }: { user: IUser }) => {
 
   return (
     <Link to='/cmsdesk/account' className='flex items-center gap-x-4 p-2 mb-5'>
-      <div className='h-12 rounded-full overflow-hidden aspect-square'>
+      <div className='h-12 min-w-12 rounded-full overflow-hidden aspect-square border border-zinc-200'>
         <img
-          className='object-cover object-center h-full w-full'
-          src='/favicon.ico'
+          className='object-contain object-center h-full w-full'
+          src={getImageUrl(user.usr_avatar)}
           alt={fullName}
         />
       </div>

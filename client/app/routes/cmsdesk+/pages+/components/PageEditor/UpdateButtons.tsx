@@ -3,9 +3,11 @@ import { useNavigate, useParams } from '@remix-run/react';
 export default function UpdateButtons({
   loading,
   isChanged,
+  isPublished,
 }: {
   loading: boolean;
   isChanged: boolean;
+  isPublished: boolean;
 }) {
   const navigate = useNavigate();
   const params = useParams();
@@ -19,10 +21,10 @@ export default function UpdateButtons({
           disabled={loading}
           onClick={async () => {
             if (confirm('Bạn có chắc muốn xóa bài viết này chứ?')) {
-              await fetch(`/cmsdesk/branches/${params.id}/edit`, {
+              await fetch(`/cmsdesk/pages/${params.id}/edit`, {
                 method: 'DELETE',
               });
-              navigate('/cmsdesk/branches');
+              navigate('/cmsdesk/pages');
             }
           }}
         >
@@ -31,24 +33,49 @@ export default function UpdateButtons({
       </div>
 
       <div className='flex gap-x-2'>
-        <button
-          className='center rounded-lg bg-blue-500 py-2 px-3 font-sans font-bold uppercase text-white 
+        {isPublished && (
+          <button
+            className='center rounded-lg border border-blue-500 py-2 px-3 font-sans font-bold uppercase text-blue-500 shadow-md 
+            shadow-blue-500/20 transition-all hover:shadow-lg enable:active:bg-blue-500/10 disabled:opacity-60'
+            type='submit'
+            disabled={loading}
+            name='isPublished'
+            value='false'
+          >
+            Ẩn trang
+          </button>
+        )}
+
+        {isPublished ? (
+          <button
+            className='center rounded-lg bg-blue-500 py-2 px-3 font-sans font-bold uppercase text-white 
           shadow-md shadow-blue-500/20 transition-all hover:shadow-lg enable:active:bg-blue-500/80 
           disabled:opacity-60'
-          type='submit'
-          disabled={!isChanged || loading}
-        >
-          Cập nhật
-        </button>
+            type='submit'
+            disabled={!isChanged || loading}
+          >
+            Lưu Trang
+          </button>
+        ) : (
+          <button
+            className='center rounded-lg bg-blue-500 py-2 px-3 font-sans font-bold uppercase text-white 
+          shadow-md shadow-blue-500/20 transition-all hover:shadow-lg enable:active:bg-blue-500/80 
+          disabled:opacity-60'
+            type='submit'
+            disabled={loading}
+            name='isPublished'
+            value='true'
+          >
+            Xuất bản
+          </button>
+        )}
 
         <button
           className='center rounded-lg border border-zinc-500 py-2 px-3 font-sans font-bold uppercase 
           text-zinc-500 shadow-md shadow-zinc-500/20 transition-all hover:shadow-lg active:opacity-60'
           onClick={() => {
             if (confirm('Bạn có chắc muốn hủy bỏ thay đổi?')) {
-              history.state?.idx === 0
-                ? navigate('/cmsdesk/branches')
-                : navigate(-1);
+              navigate('/cmsdesk/pages');
             }
           }}
           type='button'

@@ -12,18 +12,7 @@ export interface IPage {
   createdAt: string;
 }
 
-export interface IPostDetail
-  extends Omit<IPage, 'pst_category' | 'pst_template'> {
+export interface IPageDetail extends IPage {
   pst_content: string;
-  pst_category: {
-    _id: string;
-    pct_name: string;
-    pct_slug: string;
-  };
-  pst_template: {
-    _id: string;
-    ptp_name: string;
-    ptp_code: string;
-  };
   pst_isPublished: boolean;
 }

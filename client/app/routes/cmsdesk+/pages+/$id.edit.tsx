@@ -1,15 +1,15 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import BlogEditor from '~/components/PageEditor/Blog';
-import ContactPageEditor from '~/components/PageEditor/ContactPage';
-import LandingPageEditor from '~/components/PageEditor/LandingPage';
+import BlogEditor from '~/routes/cmsdesk+/pages+/components/PageEditor/Blog';
+import ContactPageEditor from '~/routes/cmsdesk+/pages+/components/PageEditor/ContactPage';
+import LandingPageEditor from '~/routes/cmsdesk+/pages+/components/PageEditor/LandingPage';
 import { PAGE } from '~/constants/page.constant';
 import { authenticator } from '~/services/auth.server';
 import { deletePage, getPostDetail, updatePage } from '~/services/page.server';
-import { getPageCategories } from '~/services/pageCategory.server';
-import { getPageTemplates } from '~/services/pageTemplate.server';
+import Wrapper from '../branches+/components/Wrapper';
+import PageEditor from './components/PageEditor';
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const id = params.id;
@@ -36,7 +36,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
         const content = formData.get('content') as string;
         const category = formData.get('category') as string;
         const template = formData.get('template') as string;
-        const isPublished = formData.get('isPublished') === 'true';
+        const isPublished = formData.get('isPublished');
 
         // Save the page to the database
         const page = await updatePage(
@@ -91,55 +91,12 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   });
   // Fetch the page from the database
   const page = await getPostDetail(id, user);
-  const pageTemplates = await getPageTemplates();
-  const pageCategories = await getPageCategories();
 
-  return { page, pageTemplates, pageCategories };
+  return { page };
 };
 
 export default function EditPage() {
-  const { page, pageTemplates } = useLoaderData<typeof loader>();
+  const { page } = useLoaderData<typeof loader>();
 
-  const [template, setTemplate] = useState(
-    page.pst_template._id ||
-      pageTemplates.find((tem) => tem.ptp_code === PAGE.TEMPLATE.BLOG.code)
-        ?.id ||
-      pageTemplates[0].id
-  );
-
-  switch (template) {
-    case pageTemplates.find(
-      (tem) => tem.ptp_code === PAGE.TEMPLATE.HOME_PAGE.code
-    )?.id:
-      return (
-        <LandingPageEditor
-          page={page}
-          type='update'
-          template={template}
-          setTemplate={setTemplate}
-        />
-      );
-
-    case pageTemplates.find(
-      (tem) => tem.ptp_code === PAGE.TEMPLATE.CONTACT_PAGE.code
-    )?.id:
-      return (
-        <ContactPageEditor
-          page={page}
-          type='update'
-          template={template}
-          setTemplate={setTemplate}
-        />
-      );
-
-    default:
-      return (
-        <BlogEditor
-          page={page}
-          type='update'
-          template={template}
-          setTemplate={setTemplate}
-        />
-      );
-  }
+  return <PageEditor page={page} />;
 }

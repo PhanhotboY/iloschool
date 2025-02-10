@@ -8,14 +8,15 @@ import {
 import { BadRequestError, NotFoundError } from '../core/errors';
 import { IImageAttrs } from '../interfaces/image.interface';
 import { IMAGE } from '../constants';
+import { unlink } from 'fs/promises';
 
 const getImages = async () => {
-  const images = await ImageModel.find({}, ['-__v']).lean();
+  const images = await ImageModel.find({}, ['-__v -img_description']).lean();
   return getReturnList(images);
 };
 
-const getImage = async (name: string) => {
-  const image = await ImageModel.findOne({ img_name: name }, ['-__v']).lean();
+const getImage = async (id: string) => {
+  const image = await ImageModel.findById(id, ['-__v']).lean();
   if (!image) throw new NotFoundError('Image not found');
 
   return getReturnData(image);
@@ -28,16 +29,16 @@ const createImage = async (files?: Express.Multer.File[]) => {
   for (const file of files) {
     const image = await ImageModel.build({
       name: file.filename,
-      alt: file.originalname,
+      title: file.filename.split('.')[0],
     });
     newImage.push(image);
   }
   return getReturnList(newImage);
 };
 
-const updateImage = async (name: string, image: IImageAttrs) => {
+const updateImage = async (id: string, image: IImageAttrs) => {
   let updatedImage = await ImageModel.findOneAndUpdate(
-    { img_name: name },
+    { _id: id },
     {
       ...formatAttributeName(removeNestedNullish(image), IMAGE.PREFIX),
     },
@@ -48,10 +49,14 @@ const updateImage = async (name: string, image: IImageAttrs) => {
   return getReturnData(updatedImage!);
 };
 
-const deleteImage = async (name: string) => {
-  const deletedImage = await ImageModel.findOneAndDelete({ img_name: name });
+const deleteImage = async (id: string) => {
+  const deletedImage = await ImageModel.findOneAndDelete({ _id: id });
   // If image not found
   if (!deletedImage) throw new NotFoundError('Image not found');
+
+  unlink(`public/uploads/${deletedImage.img_name}`).catch((err) => {
+    console.error(err);
+  });
   return getReturnData(deletedImage || {});
 };
 

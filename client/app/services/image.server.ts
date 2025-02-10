@@ -1,11 +1,11 @@
 import { ISessionUser } from '~/interfaces/auth.interface';
 import { fetcher } from '.';
-import { IImage } from '~/interfaces/image.interface';
+import { IImage, IImageDetail } from '~/interfaces/image.interface';
 
 const getImage = async (name: string) => {
   const image = await fetcher(`/images/${name}`);
 
-  return image as IImage;
+  return image as IImageDetail;
 };
 
 const getImages = async () => {

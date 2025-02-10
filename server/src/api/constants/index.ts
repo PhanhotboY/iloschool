@@ -4,9 +4,7 @@ export * from './user.constant';
 export * from './otp.constant';
 export * from './page.constant';
 export * from './booking.constant';
-export * from './product.constant';
 export * from './category.constant';
-export * from './order.constant';
 export * from './image.constant';
 export * from './branch.constant';
 

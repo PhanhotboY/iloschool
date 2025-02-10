@@ -4,21 +4,21 @@ export const PAGE = {
       name: 'None',
       slug: 'none',
     },
-    CCTT: {
+    GROW_WITH_CHILD: {
       name: 'Cùng con trưởng thành',
-      slug: 'cung-con-truong-thanh',
+      slug: 'grow-with-child',
     },
-    SK: {
+    EVENT: {
       name: 'Sự kiện',
-      slug: 'su-kien',
+      slug: 'event',
     },
-    HDVH: {
-      name: ' Hoạt động vui học',
-      slug: 'hoat-dong-vui-hoc',
+    FUN_LEARNING: {
+      name: 'Hoạt động vui học',
+      slug: 'fun-learning',
     },
-    TT: {
-      name: ' Tin tức',
-      slug: 'tin-tuc',
+    NEWS: {
+      name: 'Tin tức',
+      slug: 'news',
     },
   },
   TEMPLATE: {
@@ -42,13 +42,13 @@ export const PAGE = {
       name: 'Hệ thống Cơ sở',
       code: 'branch',
     },
-    CONTACT_PAGE: {
-      name: 'Liên hệ',
-      code: 'contact',
-    },
     BLOG: {
       name: 'Blog',
       code: 'blog',
+    },
+    ADMISSION: {
+      name: 'Tuyển sinh',
+      code: 'admission',
     },
   },
 };

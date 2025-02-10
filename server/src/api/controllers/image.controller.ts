@@ -15,7 +15,7 @@ export class ImageController {
   static async getImage(req: Request, res: Response) {
     return OK({
       res,
-      metadata: await ImageService.getImage(req.params.imgName),
+      metadata: await ImageService.getImage(req.params.id),
     });
   }
 
@@ -33,7 +33,7 @@ export class ImageController {
     return OK({
       res,
       message: 'Image updated successfully',
-      metadata: await ImageService.updateImage(req.params.imgName, req.body),
+      metadata: await ImageService.updateImage(req.params.id, req.body),
     });
   }
 
@@ -41,7 +41,7 @@ export class ImageController {
     return OK({
       res,
       message: 'Image deleted successfully',
-      metadata: await ImageService.deleteImage(req.params.imgName),
+      metadata: await ImageService.deleteImage(req.params.id),
     });
   }
 }
