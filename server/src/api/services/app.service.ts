@@ -16,7 +16,7 @@ const updateAppSettings = async (settings: IAppAttrs) => {
   }
   app = await app.updateOne(
     formatAttributeName(removeNestedNullish(settings), APP.PREFIX),
-    { new: true }
+    { new: true },
   );
 
   return getReturnData(app!);

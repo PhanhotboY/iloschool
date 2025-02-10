@@ -5,24 +5,24 @@ import { APP } from '../constants';
 
 const appSchema = new Schema<IApp, IAppModel>(
   {
-    app_title: { type: String, required: true },
-    app_description: { type: String, required: true },
-    app_logo: { type: String, required: true },
-    app_favicon: { type: String, required: true },
+    app_title: { type: String },
+    app_description: { type: String },
+    app_logo: { type: String },
+    app_favicon: { type: String },
     app_social: {
       facebook: { type: String },
       youtube: { type: String },
       tiktok: { type: String },
       zalo: { type: String },
     },
-    app_taxCode: { type: String, required: true },
+    app_taxCode: { type: String },
     app_headScripts: { type: String },
     app_bodyScripts: { type: String },
   },
   {
     timestamps: true,
     collection: APP.COLLECTION_NAME,
-  }
+  },
 );
 
 appSchema.statics.build = (attrs: IApp) => {
