@@ -10,3 +10,4 @@ uploads
 dist
 
 src/logs
+public/uploads
