@@ -73,7 +73,7 @@ const toAddressString = ({
 }) => {
   const p = provinces?.find((p) => p.slug === province);
   const districts = getDistrictsByProvinceCode(
-    p?.code || ''
+    p?.code || '',
   ) as Array<IDistrict>;
   const d = districts?.find((d) => d.slug === district);
 
@@ -86,7 +86,7 @@ const toAddressString = ({
 };
 
 const getMapLink = (html: string) => {
-  return html.match(/<iframe.*src="([^"]*)".*><\/iframe>/)?.[1];
+  return html.match(/(https:\/\/[^"]*)/)?.[1];
 };
 
 const getImageUrl = (name: string) => {

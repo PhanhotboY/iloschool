@@ -46,9 +46,7 @@ export default function UpdateButtons({
           text-zinc-500 shadow-md shadow-zinc-500/20 transition-all hover:shadow-lg active:opacity-60'
           onClick={() => {
             if (confirm('Bạn có chắc muốn hủy bỏ thay đổi?')) {
-              history.state?.idx === 0
-                ? navigate('/cmsdesk/branches')
-                : navigate(-1);
+              navigate('/cmsdesk/branches');
             }
           }}
           type='button'
