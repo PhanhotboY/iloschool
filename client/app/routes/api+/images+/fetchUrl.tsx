@@ -13,7 +13,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const res = await fetch(body.url);
 
     const blob = await res.blob();
-    const file = new File([blob], body.url.split('/')[0], { type: blob.type });
+    const file = new File([blob], body.url.split('/').at(-1), {
+      type: blob.type,
+    });
     const formData = new FormData();
     formData.append('image', file);
     const image = await createImage(formData, user);
