@@ -25,7 +25,8 @@ class MongoDB {
     this.retryCount++;
     const connectionStr = {
       production: `mongodb+srv://${dbUser}:${dbPwd}@${dbHost}?retryWrites=true&w=majority&appName=Cluster0`,
-      development: `mongodb://${dbUser}:${dbPwd}@${dbHost}:${dbPort}`,
+      development: `mongodb+srv://${dbUser}:${dbPwd}@${dbHost}?retryWrites=true&w=majority&appName=Cluster0`,
+      // development: `mongodb://${dbUser}:${dbPwd}@${dbHost}:${dbPort}`,
     }[process.env.NODE_ENV as 'development' | 'production'];
     await mongoose
       .connect(connectionStr, {

@@ -1,7 +1,6 @@
 node_modules
 
-.env
-uploads
+.env 
 .env*
 .flaskenv*
 !.env.project
@@ -9,5 +8,4 @@ uploads
 .env.me
 dist
 
-src/logs
-public/uploads
+src/logs 
