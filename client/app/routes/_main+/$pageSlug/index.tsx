@@ -11,7 +11,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
   try {
     const page = await getPage(pageSlug!);
-
+console.log(page)
     return {
       page,
     };
