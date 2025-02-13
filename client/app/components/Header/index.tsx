@@ -15,7 +15,7 @@ export default function Header({ shadow }: { shadow?: boolean }) {
   const { appSettings } = useRootLoaderData();
 
   
-  // State quản lý việc mở dropdown
+  
   const [openStoryDropdown, setOpenStoryDropdown] = useState(false);
   const [openProgramDropdown, setOpenProgramDropdown] = useState(false);
   const [openFacilityDropdown, setOpenFacilityDropdown] = useState(false);
@@ -178,10 +178,12 @@ export default function Header({ shadow }: { shadow?: boolean }) {
             onMouseLeave={() => setOpenNewsDropdown(false)}
           >
             <div className="relative h-[51px]">
-              <div className="absolute w-[79px] h-8 top-2 left-0 font-bold text-[#666666d9] text-[23.2px]">
-                Bản tin
+              <div className="absolute w-[163px] h-8 top-2 left-0 font-bold text-[#666666d9] text-[23.2px]">
+              <Link to="/ban-tin" className="text-lg font-semibold text-gray-700 hover:text-green-700 flex items-center gap-1">
+              Bản tin
+              <RiArrowDownLine className="text-gray-700 ml-2 text-xl" /> 
+            </Link>
               </div>
-              
             </div>
             {openNewsDropdown && (
               <div className="absolute left-0 top-[51px] bg-white border border-[#ccc] shadow-lg w-[220px] rounded-lg z-20">

@@ -17,74 +17,63 @@ export default function MainSlider() {
     infinite: true,
     speed: 600,
     autoplaySpeed: 5000,
-    slidesToShow: 1,  
+    slidesToShow: 1,
     slidesToScroll: 1,
     pauseOnHover: true,
-    dots: true,  
-    arrows: true,  
-    appendDots: (dots: any[]) => (
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '10px',
-          width: '100%',
-          height: 'fit-content',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <ul style={{ margin: '0px', display: 'flex', gap: '10px' }}>
-          {dots}
-        </ul>
-      </div>
-    ),
-    customPaging: (i: number) => (
-      <div
-        className="dot"
-        style={{
-          width: '12px',
-          height: '12px',
-          borderRadius: '50%',
-          margin: '0',
-          border: '2px solid #fff',
-          background: 'rgba(255, 255, 255, 0.5)',
-          transition: 'all 0.3s',
-        }}
-      ></div>
-    ),
-    prevArrow: (
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '15px',
-          zIndex: 1000,
-          transform: 'translateY(-50%)',
-          cursor: 'pointer',
-        }}
-      >
-        <RiArrowLeftSLine size={32} color="white" />
-      </div>
-    ),
-    nextArrow: (
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          right: '15px',
-          zIndex: 1000,
-          transform: 'translateY(-50%)',
-          cursor: 'pointer',
-        }}
-      >
-        <RiArrowRightSLine size={32} color="white" />
-      </div>
-    ),
+    dots: true,
+    arrows: false,
+    dotsClass: "slick-dots slider-dots", // Đổi tên class để tránh xung đột
   };
 
   return (
-    <section id="main-slider" className="relative w-full max-w-screen-xl mx-auto py-8">
-      <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px]">
+    <section className="relative w-full">
+      <div className="relative w-full h-[500px] md:h-[650px] lg:h-[796px]">
+      <style>{`
+          .slider-dots {
+            position: absolute;
+            bottom: 32px;
+            left: 0;
+            right: 0;
+            z-index: 30;
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+          }
+          
+          .slider-dots li {
+            margin: 0;
+            padding: 0;
+            width: 10px;
+            height: 10px;
+          }
+          
+          .slider-dots li button {
+            display: block;
+            width: 10px;
+            height: 10px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.4);
+            text-indent: -9999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+          }
+          
+          .slider-dots li button:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+          }
+          
+          .slider-dots li.slick-active button {
+            background-color: #fff;
+            transform: scale(1.2);
+          }
+        `}</style>
+        
         <Hydrated>
           {() => (
             <Slider
@@ -93,17 +82,19 @@ export default function MainSlider() {
               {...settings}
             >
               {sliders?.map((slider, index) => (
-                <div key={index} className="w-full h-full relative overflow-hidden">
-                  
-                  <img
-                    src={`/assets/${slider.img_name}`}  
-                    alt={slider.img_title}  
-                    className="w-full h-full object-cover"
-                    style={{ objectPosition: 'center' }}
-                  />
-                  <div className="absolute inset-0 bg-black opacity-50"></div>
-                  <div className="absolute inset-0 flex justify-center items-center">
-                    <h2 className="text-white text-3xl font-bold">{slider.img_title}</h2>
+                <div key={index} className="relative w-full h-full">
+                  <div 
+                    className="w-full h-full bg-cover bg-center"
+                    style={{
+                      backgroundImage: `url(/assets/${slider.img_name})`,
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-black/30" />
+                    <div className="absolute inset-0 flex flex-col justify-center items-center text-white px-4">
+                      <h2 className="text-[20px] md:text-[32px] leading-[32px] md:leading-[48px] font-bold text-center max-w-3xl">
+                        
+                      </h2>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -111,21 +102,21 @@ export default function MainSlider() {
           )}
         </Hydrated>
 
-        {/* Nút điều hướng */}
+        {/* Custom Navigation Buttons */}
         <button
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 z-10"
+          className="absolute top-1/2 left-6 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300"
           onClick={() => sliderRef.current?.slickPrev()}
-          title="Trước"
+          aria-label="Previous slide"
         >
-          <RiArrowLeftSLine size={32} color="white" />
+          <RiArrowLeftSLine size={32} className="text-white" />
         </button>
 
         <button
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 z-10"
+          className="absolute top-1/2 right-6 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300"
           onClick={() => sliderRef.current?.slickNext()}
-          title="Tiếp theo"
+          aria-label="Next slide"
         >
-          <RiArrowRightSLine size={32} color="white" />
+          <RiArrowRightSLine size={32} className="text-white" />
         </button>
       </div>
     </section>
