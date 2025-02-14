@@ -24,7 +24,7 @@ export const IMAGE = {
       name: 'Form đăng ký',
       code: 'register-form',
     },
-    PROGRAM_FRAMWORK: {
+    PROGRAM_FRAMEWORK: {
       name: 'Khung chương trình',
       code: 'program-framework',
     },

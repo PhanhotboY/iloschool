@@ -7,7 +7,7 @@ import { getPosts } from '~/services/page.server';
 export const loader = async () => {
   const sliders = await getImages();
   const posts = await getPosts();
-  console.log('posts', posts);
+
   return { sliders, posts };
 };
 

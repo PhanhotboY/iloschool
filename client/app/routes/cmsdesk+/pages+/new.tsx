@@ -1,14 +1,7 @@
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
-import { useState } from 'react';
 
-import BlogEditor from '~/routes/cmsdesk+/pages+/components/PageEditor/Blog';
-import ContactPageEditor from '~/routes/cmsdesk+/pages+/components/PageEditor/ContactPage';
-import LandingPageEditor from '~/routes/cmsdesk+/pages+/components/PageEditor/LandingPage';
-import { PAGE } from '~/constants/page.constant';
 import { authenticator } from '~/services/auth.server';
 import { createPage } from '~/services/page.server';
-import Wrapper from '../branches+/components/Wrapper';
 import PageEditor from './components/PageEditor';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -41,7 +34,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         // Save the page to the database
         const page = await createPage(
           { title, content, thumbnail, category, template, isPublished },
-          user!
+          user!,
         );
 
         return {

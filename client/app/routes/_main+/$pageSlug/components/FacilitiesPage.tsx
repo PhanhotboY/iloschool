@@ -1,11 +1,7 @@
-import { useLoaderData } from '@remix-run/react';
-
-import { loader } from '.';
 import TextRenderer from '~/components/TextRenderer';
+import { IPageDetail } from '~/interfaces/page.interface';
 
-export default function LandingPage() {
-  const { page } = useLoaderData<typeof loader>();
-
+export default function FacilitiesPage({ page }: { page: IPageDetail }) {
   return (
     <main className='mb-16'>
       <section className='w-full h-fit'>

@@ -1,4 +1,4 @@
-import { IPostDetail } from '~/interfaces/page.interface';
+import { IPageDetail } from '~/interfaces/page.interface';
 import { getPublicPeriod } from '~/lib';
 import { useRootLoaderData } from '~/lib/useRootLoaderData';
 import { RiEyeFill } from '@remixicon/react';
@@ -6,7 +6,7 @@ import { RiEyeFill } from '@remixicon/react';
 import './index.css';
 import TextRenderer from '../TextRenderer';
 
-export default function PostDetail({ page }: { page: IPostDetail }) {
+export default function PostDetail({ page }: { page: IPageDetail }) {
   const { appSettings } = useRootLoaderData();
 
   return (
