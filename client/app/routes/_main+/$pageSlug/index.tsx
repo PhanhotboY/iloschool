@@ -7,7 +7,9 @@ import { getPage } from '~/services/page.server';
 import { PAGE } from '~/constants/page.constant';
 import AboutPage from './components/AboutPage';
 import CurriculumPage from './components/CurriculumPage';
-
+import FacilitiesPage from './components/FacilitiesPage';
+import AdmissionsPage from './components/AdmissionsPage';
+import ILOSystemPage from './components/ILOsystemPage';
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { pageSlug } = params;
 
@@ -46,11 +48,12 @@ export default function Page() {
   switch (page.pst_template) {
     case PAGE.TEMPLATE.HOME_PAGE.code:
     case PAGE.TEMPLATE.BRANCH_PAGE.code:
+      return <ILOSystemPage page={page} />;
     case PAGE.TEMPLATE.FACILITIES_PAGE.code:
-      return;
+      return <FacilitiesPage page={page} />;
 
     case PAGE.TEMPLATE.ADMISSION.code:
-      return;
+      return <AdmissionsPage page={page} />;
 
     case PAGE.TEMPLATE.ABOUT.code:
       return <AboutPage page={page} />;
