@@ -19,7 +19,7 @@ body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
   overflow-x: clip;
-  color: var(--sub8-text);
+  color: var(--sub1-text);
 
   img {
     display: block;
@@ -65,10 +65,6 @@ body {
   }
 }
 
-main {
-  user-select: none;
-}
-
 svg:focus,
 svg *:focus {
   outline: none !important;
@@ -91,7 +87,9 @@ label {
 .headroom {
   padding: 15px 15px 0;
   z-index: 1000;
-  transition: background-color var(--transition), padding var(--transition);
+  transition:
+    background-color var(--transition),
+    padding var(--transition);
 
   &--pinned {
     padding: 10px 15px;

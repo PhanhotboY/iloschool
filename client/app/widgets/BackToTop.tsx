@@ -23,7 +23,8 @@ export default function BackToTop({ className }: { className?: string }) {
     <button
       id='scroll-to-top'
       onClick={scrollToTop}
-      className={`hidden ${className}`}
+      className={`hidden ${className} border-2 border-zinc-400 rounded-full p-3 hover:bg-[--sub4-color]
+        hover:text-white hover:border-transparent transition-all duration-300`}
       style={{ position: 'fixed', bottom: 40, right: 40 }}
     >
       <div>

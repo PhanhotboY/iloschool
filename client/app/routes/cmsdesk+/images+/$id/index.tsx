@@ -40,7 +40,7 @@ export const action = async ({ request, params }: LoaderFunctionArgs) => {
         await updateImage(
           id,
           { title, type, isPublic, link, description },
-          user
+          user,
         );
 
         return { toast: { message: 'Cập nhật thành công', type: 'success' } };
@@ -100,19 +100,21 @@ export default function ImagePopup() {
   };
 
   useEffect(() => {
-    document.body.style.height = '100vh';
-    document.body.style.overflow = 'hidden';
+    const html = document.querySelector('html');
 
-    const escapeHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closePopupHandler();
-    };
-    document.addEventListener('keydown', escapeHandler);
+    if (html) {
+      html.style.overflow = 'hidden';
 
-    return () => {
-      document.body.style.height = 'auto';
-      document.body.style.overflowY = 'auto';
-      document.removeEventListener('keydown', escapeHandler);
-    };
+      const escapeHandler = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') closePopupHandler();
+      };
+      document.addEventListener('keydown', escapeHandler);
+
+      return () => {
+        html.style.overflowY = 'auto';
+        document.removeEventListener('keydown', escapeHandler);
+      };
+    }
   }, []);
 
   useEffect(() => {

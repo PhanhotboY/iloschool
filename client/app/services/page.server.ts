@@ -1,6 +1,6 @@
 import { ISessionUser } from '~/interfaces/auth.interface';
 import { fetcher } from '.';
-import { IPage, IPostDetail } from '~/interfaces/page.interface';
+import { IPage, IPageDetail } from '~/interfaces/page.interface';
 
 const getPosts = async (q?: string) => {
   const pages = await fetcher('/pages?type=blog');
@@ -33,12 +33,12 @@ const getUnpublishedPages = async ({
 
 const getPostDetail = async (id: string, request: ISessionUser) => {
   const page = await fetcher(`/pages/${id}`, { request });
-  return page as IPostDetail;
+  return page as IPageDetail;
 };
 
 const getPage = async (slug: string) => {
   const page = await fetcher(`/pages/${slug}`);
-  return page as IPostDetail;
+  return page as IPageDetail;
 };
 
 const createPage = async (data: any, request: ISessionUser) => {

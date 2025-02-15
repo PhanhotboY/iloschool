@@ -106,7 +106,7 @@ export default function App() {
           theme='light'
           transition={Bounce}
         />
-        <Hydrated>{() => <BackToTop />}</Hydrated>
+        <BackToTop />
         <ScrollRestoration />
         <Scripts />
       </body>

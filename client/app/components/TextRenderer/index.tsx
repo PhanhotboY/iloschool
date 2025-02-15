@@ -11,9 +11,11 @@ import { useEffect } from 'react';
 export default function TextRenderer({
   content,
   truncate,
+  maxLines = 3,
 }: {
   content: string;
   truncate?: boolean;
+  maxLines?: number;
 }) {
   const { blocks } = JSON.parse(content || '{"blocks": []}');
 
@@ -32,9 +34,9 @@ export default function TextRenderer({
           ? {
               display: '-webkit-box',
               textOverflow: 'ellipsis',
-              WebkitLineClamp: 3,
+              WebkitLineClamp: maxLines,
               WebkitBoxOrient: 'vertical',
-              overflowWrap: 'break-word',
+              overflowWrap: 'normal',
               overflow: 'hidden',
             }
           : {}
